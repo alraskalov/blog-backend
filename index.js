@@ -6,17 +6,10 @@ import {
   postCreateValidator,
   registerValidator,
 } from './validations/auth.js';
-import checkAuth from './middlewares/checkAuth.js';
-import { getMe, signin, signup } from './controllers/UserController.js';
-import {
-  createPost,
-  deletePost,
-  getOnePost,
-  getPosts,
-  updatePost,
-} from './controllers/PostController.js';
+import { PostController, UserController } from './controllers/index.js';
+
 import multer from 'multer';
-import handleValidationError from './middlewares/handleValidationError.js';
+import { handleValidationError, checkAuth } from './middlewares/index.js';
 
 mongoose
   .connect(
@@ -45,9 +38,19 @@ const upload = multer({ storage });
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
-app.post('/signin', loginValidator, handleValidationError, signin);
-app.post('/signup', registerValidator, handleValidationError, signup);
-app.get('/user/me', checkAuth, getMe);
+app.post(
+  '/signin',
+  loginValidator,
+  handleValidationError,
+  UserController.signin
+);
+app.post(
+  '/signup',
+  registerValidator,
+  handleValidationError,
+  UserController.signup
+);
+app.get('/user/me', checkAuth, UserController.getMe);
 
 app.post('/uploads', checkAuth, upload.single('image'), (req, res) => {
   res.json({
@@ -55,11 +58,23 @@ app.post('/uploads', checkAuth, upload.single('image'), (req, res) => {
   });
 });
 
-app.post('/posts', checkAuth, postCreateValidator, createPost);
-app.get('/posts', getPosts);
-app.get('/posts/:id', getOnePost);
-app.delete('/posts/:id', checkAuth, deletePost);
-app.patch('/posts/:id', checkAuth, postCreateValidator, updatePost);
+app.post(
+  '/posts',
+  checkAuth,
+  postCreateValidator,
+  handleValidationError,
+  PostController.createPost
+);
+app.get('/posts', PostController.getPosts);
+app.get('/posts/:id', PostController.getOnePost);
+app.delete('/posts/:id', checkAuth, PostController.deletePost);
+app.patch(
+  '/posts/:id',
+  checkAuth,
+  postCreateValidator,
+  handleValidationError,
+  PostController.updatePost
+);
 
 app.listen(3000, (err) => {
   if (err) {
