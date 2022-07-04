@@ -30,21 +30,34 @@ app.post('/register', registerValidator, async (req, res) => {
     }
     const password = req.body.password;
     const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
+    const hash = await bcrypt.hash(password, salt);
 
     const doc = new UserModel({
       email: req.body.email,
       fullName: req.body.fullName,
       avatarUrl: req.body.avatarUrl,
-      passwordHash,
+      passwordHash: hash,
     });
 
     const user = await doc.save();
-    res.json(user);
+    const token = jwt.sign(
+      {
+        _id: user._id,
+      },
+      'secret-dev',
+      {
+        expiresIn: '30d',
+      }
+    );
+    const { passwordHash, ...userData } = user._doc;
+    res.json({
+      ...userData,
+      token,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: 'Не удалось зарегестрироваться, попробуйте еще',
+      message: 'Не удалось зарегистрироваться, попробуйте еще',
     });
   }
 });
