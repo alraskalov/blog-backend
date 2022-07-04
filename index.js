@@ -16,6 +16,7 @@ import {
   updatePost,
 } from './controllers/PostController.js';
 import multer from 'multer';
+import handleValidationError from './middlewares/handleValidationError.js';
 
 mongoose
   .connect(
@@ -44,8 +45,8 @@ const upload = multer({ storage });
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
-app.post('/signin', loginValidator, signin);
-app.post('/signup', registerValidator, signup);
+app.post('/signin', loginValidator, handleValidationError, signin);
+app.post('/signup', registerValidator, handleValidationError, signup);
 app.get('/user/me', checkAuth, getMe);
 
 app.post('/uploads', checkAuth, upload.single('image'), (req, res) => {
