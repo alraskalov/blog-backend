@@ -78,7 +78,7 @@ export const getOnePost = (req, res) => {
 
         res.json(doc);
       }
-    );
+    ).populate('owner');
   } catch (error) {
     console.log(error);
     res.status(500).json({
