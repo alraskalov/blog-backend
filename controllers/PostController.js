@@ -49,10 +49,10 @@ export const getPosts = async (req, res) => {
   }
 };
 
-export const getOnePost = async (req, res) => {
+export const getOnePost = (req, res) => {
   try {
     const postId = req.params.id;
-    await PostModel.findOneAndUpdate(
+    PostModel.findOneAndUpdate(
       {
         _id: postId,
       },
