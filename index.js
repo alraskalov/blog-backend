@@ -68,6 +68,7 @@ app.post(
   PostController.createPost
 );
 app.get('/posts', PostController.getPosts);
+app.get('/posts/tags', PostController.getTags);
 app.get('/posts/:id', PostController.getOnePost);
 app.delete('/posts/:id', checkAuth, PostController.deletePost);
 app.patch(
