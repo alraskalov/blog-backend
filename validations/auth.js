@@ -23,6 +23,6 @@ export const postCreateValidator = [
       min: 10,
     })
     .isString(),
-  body('tags', 'Неверный формат тегов').optional().isString(),
+  body('tags', 'Неверный формат тегов').optional().isArray(),
   body('imageUrl', 'Некорректная ссылка на изображение').optional().isString(),
 ];

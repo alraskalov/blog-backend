@@ -87,10 +87,10 @@ export const getOnePost = (req, res) => {
   }
 };
 
-export const deletePost = async (req, res) => {
+export const deletePost = (req, res) => {
   try {
     const postId = req.params.id;
-    await PostModel.findOneAndDelete(
+    PostModel.findOneAndDelete(
       {
         _id: postId,
       },
