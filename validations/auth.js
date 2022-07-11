@@ -1,6 +1,6 @@
-import { body } from 'express-validator';
+const { body } = require('express-validator');
 
-export const registerValidator = [
+const registerValidator = [
   body('email', 'Некорректный формат почты').isEmail(),
   body('password', 'Минимальная длина пароля - 6 символов').isLength({
     min: 6,
@@ -9,14 +9,14 @@ export const registerValidator = [
   body('avatarUrl', 'Некорректная ссылка на аватар').optional().isURL(),
 ];
 
-export const loginValidator = [
+const loginValidator = [
   body('email', 'Некорректный формат почты').isEmail(),
   body('password', 'Минимальная длина пароля - 6 символов').isLength({
     min: 6,
   }),
 ];
 
-export const postCreateValidator = [
+const postCreateValidator = [
   body('title', 'Введите заголовок статьи').isLength({ min: 3 }).isString(),
   body('text', 'Введите текст статьи')
     .isLength({
@@ -26,3 +26,9 @@ export const postCreateValidator = [
   body('tags', 'Неверный формат тегов').optional().isArray(),
   body('imageUrl', 'Некорректная ссылка на изображение').optional().isString(),
 ];
+
+module.exports = {
+  registerValidator,
+  loginValidator,
+  postCreateValidator,
+};

@@ -1,10 +1,13 @@
-import jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
 
-export default (req, res, next) => {
+const { TOKEN_SECRET } = require('../utils/configure');
+
+// eslint-disable-next-line consistent-return
+const checkAuth = (req, res, next) => {
   const token = (req.headers.authorization || '').replace(/Bearer\s?/, '');
   if (token) {
     try {
-      const decodeToken = jwt.verify(token, 'secret-dev');
+      const decodeToken = jwt.verify(token, TOKEN_SECRET);
       req.userId = decodeToken._id;
       next();
     } catch (error) {
@@ -17,4 +20,8 @@ export default (req, res, next) => {
       message: 'Нет доступа',
     });
   }
+};
+
+module.exports = {
+  checkAuth,
 };

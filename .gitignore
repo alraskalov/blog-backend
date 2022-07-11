@@ -1,7 +1,10 @@
 # dependencies
 /node_modules
 /.pnp
+/uploads
 .pnp.js
+.env
+.log
 
 # misc
 .DS_Store

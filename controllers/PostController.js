@@ -1,6 +1,7 @@
-import PostModel from '../models/Post.js';
+/* eslint-disable consistent-return */
+const PostModel = require('../models/Post');
 
-export const getTags = async (req, res) => {
+const getTags = async (req, res) => {
   try {
     const posts = await PostModel.find().limit(5).exec();
     const tags = posts
@@ -17,9 +18,11 @@ export const getTags = async (req, res) => {
   }
 };
 
-export const createPost = async (req, res) => {
+const createPost = async (req, res) => {
   try {
-    const { title, text, imageUrl, tags } = req.body;
+    const {
+      title, text, imageUrl, tags,
+    } = req.body;
     const doc = new PostModel({
       title,
       text,
@@ -37,7 +40,7 @@ export const createPost = async (req, res) => {
   }
 };
 
-export const getPosts = async (req, res) => {
+const getPosts = async (req, res) => {
   try {
     const posts = await PostModel.find().populate('owner').exec();
     res.json(posts);
@@ -49,7 +52,7 @@ export const getPosts = async (req, res) => {
   }
 };
 
-export const getOnePost = (req, res) => {
+const getOnePost = (req, res) => {
   try {
     const postId = req.params.id;
     PostModel.findOneAndUpdate(
@@ -64,7 +67,7 @@ export const getOnePost = (req, res) => {
       },
       (err, doc) => {
         if (err) {
-          console.log(error);
+          console.log(err);
           return res.status(500).json({
             message: 'Не удалось получить статью',
           });
@@ -77,7 +80,7 @@ export const getOnePost = (req, res) => {
         }
 
         res.json(doc);
-      }
+      },
     ).populate('owner');
   } catch (error) {
     console.log(error);
@@ -87,7 +90,7 @@ export const getOnePost = (req, res) => {
   }
 };
 
-export const deletePost = (req, res) => {
+const deletePost = (req, res) => {
   try {
     const postId = req.params.id;
     PostModel.findOneAndDelete(
@@ -96,7 +99,7 @@ export const deletePost = (req, res) => {
       },
       (err, doc) => {
         if (err) {
-          console.log(error);
+          console.log(err);
           return res.status(500).json({
             message: 'Не удалось удалить статью',
           });
@@ -111,7 +114,7 @@ export const deletePost = (req, res) => {
         res.json({
           success: true,
         });
-      }
+      },
     );
   } catch (error) {
     console.log(error);
@@ -121,10 +124,12 @@ export const deletePost = (req, res) => {
   }
 };
 
-export const updatePost = async (req, res) => {
+const updatePost = async (req, res) => {
   try {
     const postId = req.params.id;
-    const { title, text, imageUrl, tags } = req.body;
+    const {
+      title, text, imageUrl, tags,
+    } = req.body;
     await PostModel.updateOne(
       {
         _id: postId,
@@ -135,7 +140,7 @@ export const updatePost = async (req, res) => {
         imageUrl,
         owner: req.userId,
         tags,
-      }
+      },
     );
     res.json({
       success: true,
@@ -146,4 +151,13 @@ export const updatePost = async (req, res) => {
       message: 'Не удалось обновить статью',
     });
   }
+};
+
+module.exports = {
+  getTags,
+  createPost,
+  getPosts,
+  getOnePost,
+  deletePost,
+  updatePost,
 };
