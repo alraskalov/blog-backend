@@ -21,9 +21,11 @@ app.use(requestLogger);
 app.use(limiter);
 app.use(express.json());
 app.use(cors());
-app.use(helmet({
-  crossOriginResourcePolicy: false,
-}));
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  }),
+);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(router);
