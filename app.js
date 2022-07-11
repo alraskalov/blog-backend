@@ -20,7 +20,9 @@ mongoose.connect(MONGO_URL);
 app.use(requestLogger);
 app.use(limiter);
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: 'https://blog-frontend-opal.vercel.app',
+}));
 app.use(
   helmet({
     crossOriginResourcePolicy: false,
