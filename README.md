@@ -1,6 +1,4 @@
-# API React Blog
-
-## Бэкенд для приложения Reac Blog
+# API React Blog - бэкенд для приложения Reac Blog
 
 Сервер доступен по адресу - **[React Blog API](https://raskalov-blog-api.herokuapp.com)**
 
